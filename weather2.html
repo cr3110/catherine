@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .weather-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .temperature {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        .location {
+            font-size: 1.5em;
+        }
+        .description {
+            margin-top: 10px;
+            font-style: italic;
+        }
+        .refresh-button {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            background-color: #2196F3;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body ng-app="weatherApp" ng-controller="WeatherController">
+
+    <div class="container">
+        <h1>Weather App</h1>
+        <div class="weather-info">
+            <div class="temperature">{{ weather.temperature }}°C</div>
+            <div class="location">{{ weather.location }}</div>
+            <div class="description">{{ weather.description }}</div>
+        </div>
+        <button ng-click="refreshWeather()" class="refresh-button">Refresh</button>
+    </div>
+
+<script>
+angular.module('weatherApp', [])
+.controller('WeatherController', function($scope) {
+    $scope.weather = {
+        temperature: 25,
+        location: 'City, Country',
+        description: 'Sunny'
+    };
+
+    $scope.refreshWeather = function() {
+        // Simulate fetching weather data
+        $scope.weather = {
+            temperature: Math.floor(Math.random() * 30) + 1, // Random temperature between 1 and 30
+            location: 'City, Country',
+            description: 'Sunny'
+        };
+    };
+});
+</script>
+</body>
+</html>
