@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive Quiz App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .question {
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            margin-bottom: 5px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .option:hover {
+            background-color: #e0e0e0;
+        }
+        .score {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body ng-app="quizApp" ng-controller="QuizController">
+
+    <div class="container" ng-show="!quizCompleted">
+        <h1>Interactive Quiz App</h1>
+        <div class="question">{{ currentQuestion.question }}</div>
+        <ul class="options">
+            <li class="option" ng-repeat="option in currentQuestion.options" ng-click="selectOption(option)">
+                {{ option }}
+            </li>
+        </ul>
+        <button ng-click="nextQuestion()" ng-disabled="!selectedOption">Next</button>
+    </div>
+
+    <div class="container" ng-show="quizCompleted">
+        <h1>Quiz Completed!</h1>
+        <div class="score">Your score: {{ score }}/{{ questions.length }}</div>
+    </div>
+
+<script>
+angular.module('quizApp', [])
+.controller('QuizController', function($scope) {
+    $scope.questions = [
+        {
+            question: 'What is the capital of France?',
+            options: ['London', 'Paris', 'Berlin', 'Madrid'],
+            answer: 'Paris'
+        },
+        {
+            question: 'What is 2 + 2?',
+            options: ['3', '4', '5', '6'],
+            answer: '4'
+        },
+        {
+            question: 'Which planet is known as the Red Planet?',
+            options: ['Earth', 'Mars', 'Venus', 'Mercury'],
+            answer: 'Mars'
+        }
+    ];
+
+    $scope.currentQuestionIndex = 0;
+    $scope.currentQuestion = $scope.questions[$scope.currentQuestionIndex];
+    $scope.selectedOption = null;
+    $scope.score = 0;
+    $scope.quizCompleted = false;
+
+    $scope.selectOption = function(option) {
+        $scope.selectedOption = option;
+    };
+
+    $scope.nextQuestion = function() {
+        if ($scope.selectedOption === $scope.currentQuestion.answer) {
+            $scope.score++;
+        }
+
+        if ($scope.currentQuestionIndex < $scope.questions.length - 1) {
+            $scope.currentQuestionIndex++;
+            $scope.currentQuestion = $scope.questions[$scope.currentQuestionIndex];
+            $scope.selectedOption = null;
+        } else {
+            $scope.quizCompleted = true;
+        }
+    };
+});
+</script>
+</body>
+</html>
