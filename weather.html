@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .event-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        .event-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .event-item {
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body ng-app="weatherApp" ng-controller="WeatherController">
+
+    <div class="container">
+        <h1 class="header">Weather App</h1>
+        <input type="text" ng-model="newEvent" placeholder="Enter event name" class="event-input" />
+        <button ng-click="addEvent()" class="event-input">Add Event</button>
+        <ul class="event-list">
+            <li class="event-item" ng-repeat="event in events">{{ event }}</li>
+        </ul>
+    </div>
+
+<script>
+angular.module('weatherApp', [])
+.controller('WeatherController', function($scope) {
+    $scope.events = [];
+
+    $scope.addEvent = function() {
+        if ($scope.newEvent.trim() !== '') {
+            $scope.events.push($scope.newEvent);
+            $scope.newEvent = '';
+        }
+    };
+});
+</script>
+</body>
+</html>
