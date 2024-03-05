@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Event Calendar</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+        }
+        .day {
+            padding: 10px;
+            text-align: center;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+        }
+        .event {
+            margin-top: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            background-color: #e0f7fa;
+        }
+        .login-form {
+            max-width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        .form-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #2196F3;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body ng-app="calendarApp" ng-controller="CalendarController">
+
+    <div class="container" ng-if="!loggedIn">
+        <h1 class="header">Event Calendar</h1>
+        <div class="login-form">
+            <input type="text" ng-model="username" placeholder="Username" class="form-input" />
+            <input type="password" ng-model="password" placeholder="Password" class="form-input" />
+            <button ng-click="login()" class="form-button">Log In</button>
+        </div>
+    </div>
+
+    <div class="container" ng-if="loggedIn">
+        <h1 class="header">Event Calendar</h1>
+        <div class="calendar">
+            <div class="day" ng-repeat="day in days">{{ day }}</div>
+        </div>
+        <div class="event" ng-repeat="event in events">{{ event }}</div>
+    </div>
+
+<script>
+angular.module('calendarApp', [])
+.controller('CalendarController', function($scope) {
+    $scope.days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    $scope.events = ['Event 1', 'Event 2', 'Event 3'];
+
+    $scope.login = function() {
+        // Simulate login logic
+        if ($scope.username === 'user' && $scope.password === 'password') {
+            $scope.loggedIn = true;
+        } else {
+            alert('Invalid username or password');
+        }
+    };
+});
+</script>
+</body>
+</html>
