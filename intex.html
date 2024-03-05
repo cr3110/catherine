@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive Gallery</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+        .gallery-item {
+            margin: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .gallery-item:hover {
+            transform: scale(1.1);
+        }
+        .gallery-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .details {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        .details.active {
+            display: block;
+        }
+    </style>
+</head>
+<body ng-app="galleryApp" ng-controller="GalleryController">
+
+    <div class="gallery">
+        <div class="gallery-item" ng-repeat="image in images" ng-click="showDetails(image)">
+            <img ng-src="{{ image.src }}" alt="{{ image.title }}">
+        </div>
+    </div>
+
+    <div class="details" ng-class="{ 'active': selectedImage }">
+        <h2>{{ selectedImage.title }}</h2>
+        <img ng-src="{{ selectedImage.src }}" alt="{{ selectedImage.title }}">
+        <p>{{ selectedImage.description }}</p>
+        <button ng-click="hideDetails()">Close</button>
+    </div>
+
+<script>
+angular.module('galleryApp', [])
+.controller('GalleryController', function($scope) {
+    $scope.images = [
+        { src: 'https://as2.ftcdn.net/v2/jpg/06/02/74/39/1000_F_602743936_qbTuk7bb34cSYBgSDbsirlmJSbxRBUFM.jpg', title: 'Image 1' },
+        { src: 'https://t3.ftcdn.net/jpg/05/59/97/44/360_F_559974491_Kk1EuoPuhdTQ6dKeNmyN1H6daGZZgKfX.jpg', title: 'Image 2', description: 'Description 2' },
+        { src: 'https://i0.wp.com/pediaa.com/wp-content/uploads/2017/03/Difference-Between-Pitbull-and-American-Bully-2.jpg?fit=1024%2C682&ssl=1', title: 'Image 3', description: 'Description 3' }
+    ];
+
+    $scope.showDetails = function(image) {
+        $scope.selectedImage = image;
+    };
+
+    $scope.hideDetails = function() {
+        $scope.selectedImage = null;
+    };
+});
+</script>
+</body>
+</html>
