@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Catalog</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .product img {
+            max-width: 100%;
+            height: auto;
+        }
+        .filters {
+            margin-bottom: 20px;
+        }
+        .filter {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .filter.active {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body ng-app="catalogApp" ng-controller="CatalogController">
+
+    <div class="container">
+        <h1>Product Catalog</h1>
+        <div class="filters">
+            <span class="filter" ng-click="filterCategory('All')" ng-class="{ 'active': currentCategory === 'All' }">All</span>
+            <span class="filter" ng-repeat="category in categories" ng-click="filterCategory(category)" ng-class="{ 'active': currentCategory === category }">{{ category }}</span>
+        </div>
+        <div class="products">
+            <div class="product" ng-repeat="product in filteredProducts">
+                <img ng-src="{{ product.image }}" alt="{{ product.name }}" />
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.description }}</p>
+                <p>Price: {{ product.price }}</p>
+            </div>
+        </div>
+    </div>
+
+<script>
+angular.module('catalogApp', [])
+.controller('CatalogController', function($scope) {
+    $scope.products = [
+        {
+            name: 'Product 1',
+            category: 'Category 1',
+            description: 'Description of Product 1',
+            price: '$10',
+            image: 'https://via.placeholder.com/150'
+        },
+        {
+            name: 'Product 2',
+            category: 'Category 2',
+            description: 'Description of Product 2',
+            price: '$20',
+            image: 'https://via.placeholder.com/150'
+        },
+        {
+            name: 'Product 3',
+            category: 'Category 1',
+            description: 'Description of Product 3',
+            price: '$15',
+            image: 'https://via.placeholder.com/150'
+        },
+        {
+            name: 'Product 4',
+            category: 'Category 2',
+            description: 'Description of Product 4',
+            price: '$25',
+            image: 'https://via.placeholder.com/150'
+        }
+    ];
+
+    $scope.categories = ['All', 'Category 1', 'Category 2'];
+    $scope.currentCategory = 'All';
+
+    $scope.filterCategory = function(category) {
+        $scope.currentCategory = category;
+    };
+
+    $scope.filteredProducts = $scope.products;
+
+    $scope.$watch('currentCategory', function(newVal, oldVal) {
+        if (newVal === 'All') {
+            $scope.filteredProducts = $scope.products;
+        } else {
+            $scope.filteredProducts = $scope.products.filter(function(product) {
+                return product.category === newVal;
+            });
+        }
+    });
+});
+</script>
+</body>
+</html>
