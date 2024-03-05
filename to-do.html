@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .task-list {
+            list-style: none;
+            padding: 0;
+        }
+        .task {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+            animation-duration: 0.3s;
+            animation-fill-mode: both;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .task.ng-enter {
+            animation-name: slideIn;
+        }
+        .task:hover {
+            background-color: #e0e0e0;
+        }
+        .task-input {
+            flex: 1;
+            margin-right: 10px;
+            border: none;
+            padding: 5px;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        .task-buttons {
+            display: flex;
+            align-items: center;
+        }
+        .task-button {
+            background-color: #2196F3;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            margin-left: 5px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body ng-app="todoApp" ng-controller="TodoController">
+
+    <div class="container">
+        <h1>To-Do List</h1>
+        <form ng-submit="addTask()">
+            <input type="text" ng-model="newTask" placeholder="Add a new task" class="task-input" />
+            <button type="submit" class="task-button">Add</button>
+        </form>
+        <ul class="task-list">
+            <li class="task" ng-repeat="task in tasks" ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}">
+                <span>{{ task }}</span>
+                <button class="task-button" ng-click="removeTask($index)">Remove</button>
+            </li>
+        </ul>
+    </div>
+
+<script>
+angular.module('todoApp', [])
+.controller('TodoController', function($scope) {
+    $scope.tasks = [];
+
+    $scope.addTask = function() {
+        if ($scope.newTask) {
+            $scope.tasks.push($scope.newTask);
+            $scope.newTask = '';
+        }
+    };
+
+    $scope.removeTask = function(index) {
+        $scope.tasks.splice(index, 1);
+    };
+});
+</script>
+</body>
+</html>
