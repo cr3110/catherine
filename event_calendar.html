@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Event Calendar</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .calendar {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .days {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -5px;
+        }
+        .day {
+            flex: 1 0 14.28%; /* 1/7 */
+            padding: 10px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .day:nth-child(7n+1) {
+            color: red; /* Highlight Sundays */
+        }
+        @media (max-width: 768px) {
+            .day {
+                flex-basis: 20%; /* 1/5 for smaller screens */
+            }
+        }
+        @media (max-width: 480px) {
+            .day {
+                flex-basis: 50%; /* 1/2 for even smaller screens */
+            }
+        }
+    </style>
+</head>
+<body ng-app="calendarApp" ng-controller="CalendarController">
+
+    <div class="calendar">
+        <h1 class="header">Event Calendar</h1>
+        <div class="days">
+            <div class="day" ng-repeat="day in days">{{ day }}</div>
+        </div>
+    </div>
+
+<script>
+angular.module('calendarApp', [])
+.controller('CalendarController', function($scope) {
+    $scope.days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+});
+</script>
+</body>
+</html>
