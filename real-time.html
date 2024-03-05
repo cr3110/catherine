@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real-Time Chat App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .chat-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 5px 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .message.from {
+            background-color: #e0f7fa;
+            text-align: right;
+        }
+        .message-input {
+            width: calc(100% - 80px);
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            padding: 5px;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        .send-button {
+            background-color: #2196F3;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body ng-app="chatApp" ng-controller="ChatController">
+
+    <div class="container">
+        <h1>Real-Time Chat App</h1>
+        <div class="chat-box" ng-scroll-bottom>
+            <div class="message" ng-class="{ 'from': message.from !== 'Me' }" ng-repeat="message in messages">
+                <strong>{{ message.from }}:</strong> {{ message.text }}
+            </div>
+        </div>
+        <form ng-submit="sendMessage()">
+            <input type="text" ng-model="newMessage" placeholder="Type your message here" class="message-input" />
+            <button type="submit" class="send-button">Send</button>
+        </form>
+    </div>
+
+<script>
+angular.module('chatApp', [])
+.controller('ChatController', function($scope) {
+    $scope.messages = [];
+    $scope.newMessage = '';
+
+    $scope.sendMessage = function() {
+        if ($scope.newMessage.trim() !== '') {
+            $scope.messages.push({ from: 'Me', text: $scope.newMessage });
+            $scope.newMessage = '';
+        }
+    };
+
+    // Simulating receiving messages
+    setInterval(function() {
+        $scope.$apply(function() {
+            $scope.messages.push({ from: 'Friend', text: 'Hello!' });
+        });
+    }, 2000);
+})
+.directive('ngScrollBottom', function() {
+    return {
+        scope: {
+            ngScrollBottom: "="
+        },
+        link: function(scope, element) {
+            scope.$watchCollection('ngScrollBottom', function(newValue) {
+                if (newValue) {
+                    element.scrollTop(element[0].scrollHeight);
+                }
+            });
+        }
+    };
+});
+</script>
+</body>
+</html>
