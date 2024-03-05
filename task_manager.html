@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Link Manager</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .task-input {
+            padding: 10px;
+            width: 250px;
+            margin-right: 10px;
+        }
+        .task-button {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .task-list {
+            list-style: none;
+            padding: 0;
+        }
+        .task-item {
+            background-color: #fff;
+            padding: 10px;
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .task-item button {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body ng-app="taskManagerApp" ng-controller="TaskManagerController">
+
+    <input type="text" ng-model="taskText" placeholder="Add new task" class="task-input"/>
+    <button ng-click="addTask()" class="task-button">Add Task</button>
+    <ul class="task-list">
+        <li class="task-item" ng-repeat="task in tasks">
+            {{ task.text }}
+            <div>
+                <button ng-click="editTask($index)" class="task-button">Edit</button>
+                <button ng-click="deleteTask($index)" class="task-button">Delete</button>
+            </div>
+        </li>
+    </ul>
+
+<script>
+angular.module('taskManagerApp', [])
+.controller('TaskManagerController', function($scope) {
+    $scope.tasks = [];
+
+    $scope.addTask = function() {
+        if (!$scope.taskText) return; // Prevent adding empty tasks
+        $scope.tasks.push({ text: $scope.taskText });
+        $scope.taskText = ''; // Clear the input after adding
+    };
+
+    $scope.editTask = function(index) {
+        var newTaskText = prompt('Edit task:', $scope.tasks[index].text);
+        if (newTaskText !== null && newTaskText !== '') {
+            $scope.tasks[index].text = newTaskText;
+        }
+    };
+
+    $scope.deleteTask = function(index) {
+        $scope.tasks.splice(index, 1);
+    };
+});
+</script>
+</body>
+</html>
